@@ -1,0 +1,25 @@
+.container{
+    margin-top: 1em;
+}
+
+.btn-primary {
+    border-radius: 0.6em;
+    font-weight: bold;
+  
+    font-size: 15px;
+    padding: 0.7em;
+    
+  }
+
+  
+/* html, body {
+    height: 100%; 
+    margin: 0;
+    padding: 0;
+}
+
+body {
+     background-image: url('https://unamba.edu.pe/media/k2/items/cache/8fe3e0f34d3083cba6fe73d62a783d7f_XL.jpg?t=1628912461');    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+} */

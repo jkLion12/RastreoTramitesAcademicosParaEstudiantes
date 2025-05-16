@@ -1,0 +1,569 @@
+
+    <div class="container">
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h3 class="text-center">SEGUIMIENTO DE TRÁMITE</h3>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <div class="card card-primary">
+                <div class="card-header">
+                  <h2 class="card-title"><i class="nav-icon fas fa-search"></i>&nbsp;&nbsp;Buscador de Trámite</h2>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body text-center">
+                  <div class="row">
+                      <div class="col-md-8 offset-md-4   col-12">
+                          <!-- Utilizando col-12 para ocupar toda la anchura en dispositivos pequeños -->
+                          <form class="form-inline text-center" [formGroup]="buscarForm">
+                              <!-- Agregando la clase form-inline para el formulario horizontal y text-center para centrar en dispositivos pequeños -->
+                             
+                                  <!-- <label for="">Bachiller:&nbsp;&nbsp;<input type="checkbox" name="Bachiller" id=""></label>&nbsp;&nbsp;
+                                  <label for="">Titulo:&nbsp;&nbsp;<input type="checkbox" name="Titulo" id=""></label>&nbsp;&nbsp; -->
+                                
+                              <div class="form-group mx-sm-3 mb-2">
+                                  <!-- Utilizando mx-sm-3 para el margen horizontal en dispositivos pequeños -->
+                                  <input formControlName="codigo" placeholder="Dni o Codigo de Estudiante" type="text" class="form-control" [(ngModel)]="codigo" id="codigoEstudiante">
+                              </div>
+                              <button type="submit" (click)="getTramite()" class="btn btn-primary mb-2 "><i class="nav-icon fas fa-search"></i></button>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+              
+
+              
+              
+
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+            <!-- /.col -->
+          </div>
+          <!-- /.row -->
+            <!-- AREA CHART -->
+            <div class="card card-primary"  *ngIf="status === 'true'">
+              <div class="card-header">
+                <h3 class="card-title">Area Detalle: "{{tipo}}" ({{nombre}} {{apellido}})</h3>
+                
+                <div class="card-tools">
+                  <span class="time"><i class="fas fa-clock"></i>&nbsp;<span id="fechaHora"></span></span>
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="card-body">
+                <div class="chart">
+                  <div class="card-body p-0">
+                      <div class="table-responsive">
+                        <div class="card-body">
+                          <!-- title row -->
+                          <div class="row">
+                              <div class="col-12">
+                              <h2 class="page-header">
+                                  <i class="fas fa-globe"></i> Detalles del tramite.
+                                  <small class="float-right" >Fecha de registro: {{fechatramite}} </small>
+                              </h2>
+                              </div>
+                              <!-- /.col -->
+                          </div>
+                          <!-- info row ESTO SE DEBE ARREGLAR LUEGO --> 
+                          <div class="row invoice-info">
+                              <div class="col-sm-4 invoice-col">
+                              <address>
+                                  <strong><u>Datos personales:</u></strong><br>
+                                  <b>Nombre completo: </b>{{nombre}} {{apellido}}<br>
+                                  <b>DNI: </b>{{dni}} <br>
+                                  <!-- <b>Sexo: </b>{{sexo}} -->
+                                  <p *ngIf="sexo === '1'"><b>Sexo: </b>Masculino</p>
+                                  <p *ngIf="sexo === '2'"><b>Sexo: </b>Femenino</p>
+
+                              </address>
+                              </div>
+                              <!-- /.col -->
+                              <div class="col-sm-4 invoice-col">
+                              <b><u>Datos Academicos:</u></b> 
+                              <address>
+                                  <!-- <strong></strong><br> -->
+                                  <b>Facultad: </b> {{facultad}}<br>
+                                  <b>Escuela: </b>{{escuela}}<br>
+                                  <b>codigo: </b>{{ code_estu }}<br>
+                              </address>
+                              </div>
+                              <!-- /.col -->
+                              <div class="col-sm-4 invoice-col">
+                              <b><u>Detalles del tramite:</u></b><br>
+                              <b>Codigo del tramite: </b>{{codtramite}} <br>
+                              <b>Para optar: </b>{{tipo}} <br>
+                              <!-- <b>Fecha de registro: </b>{{fechatramite}}<br> -->
+                              <b>Estado del tramite: </b>{{estado}}<br>
+    
+                              </div>
+                              <!-- /.col -->
+                          </div>                       
+                      </div>
+                      </div>
+                      <!-- /.table-responsive -->
+                    </div>
+                </div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+            <div class="card card-primary" *ngIf="status === 'false'">
+              <div class="wrapper">
+                <section class="invoice">
+                    <div class="img-container">
+                        <img src="../../../assets/dist/img/robot4.png" alt="" class="tilt-animation" style="width: 400px; height: auto;">
+                    </div>
+                    <br>
+                    <div>
+                        <h5>Este estudiante no tiene ningun tramite en proceso o este estudiante no existe</h5>
+                    </div>
+
+                </section>
+              </div>
+            </div>
+            <!-- /.card -->
+
+
+          <!-- prueba -->
+          <div *ngIf="status === 'true'">
+            <div class="row" *ngFor="let dato of data">
+              <div class="col-12">
+                <div class="card card-primary">
+                  <div class="card-header" style="display: flex; justify-content: space-between;">
+                    <h3 class="card-title timeline-header" style="margin-right: auto;">
+                      Seguimiento en Línea del Trámite Documentario: "{{dato.tipo}}" ({{dato.nombre}} {{dato.apellido}})
+                    </h3>
+                    
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+
+
+                  <!-- /.card-header -->
+                  <div class="card-body" style="display: flex; justify-content: center;">
+                    <section class="content">
+
+                      <div class="leyenda">
+                        <div class="estado">
+                          <div class="circulo completado"></div>
+                          <span>Completado</span>
+                        </div>
+                        <div class="estado">
+                          <div class="circulo en-revision"></div>
+                          <span>En Proceso</span>
+                        </div>
+                        <div class="estado">
+                          <div class="circulo detenido"></div>
+                          <span>Detenido</span>
+                        </div>
+                      </div>
+                      
+                      <div class="row" style="width: 100%; max-width: 1000px; margin-left: auto; margin-right: auto;">
+                        
+                          <div class="col" style="margin: 0 2em;">
+                            <br><img src="../../assets/dist/img/completado.png" alt="prueba" style="width: 60px;"><br>
+                            <a href="#" onclick="return false;">Mesa de partes</a><br>
+                            <span *ngIf="dato.estado === 'En proceso' || dato.nro_hito === '2'|| dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6'"> Status: Completado</span>
+                            <!-- <span *ngIf="dato.nro_hito === '2'"> Status: {{dato.estado}}</span> --><br>
+                            <span>{{dato.fechatramite}}</span><br>
+                          </div>
+                          <div class="col" style="margin: 0 2em;">
+                            <br>
+                            <img *ngIf="dato.nro_hito === '2' && dato.estado === 'Detenido' " src="../../assets/dist/img/pause.png" alt="prueba" style="width: 60px;">
+                            <img *ngIf="dato.nro_hito === '2' && dato.estado === 'En proceso' " src="../../assets/dist/img/tiempo.png" alt="prueba" style="width: 60px;">
+                            <img *ngIf="dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6' && dato.estado === 'Completado' " src="../../assets/dist/img/completado.png" alt="prueba" style="width: 60px;">
+                            <br>
+                            <a href="#" onclick="return false;">Grados y titulos</a><br>
+                            <span *ngIf="dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6'"> Status: Completado</span>
+                            <span *ngIf="dato.nro_hito === '2'"> Status: {{dato.estado}}</span><br>
+                            <span>{{dato.fecha_hito_1}}</span><br>
+                          </div>
+                          <div class="col" style="margin: 0 2em;">
+                            <br>
+                            <!-- <img *ngIf="dato.estado === 'Detenido' " src="../../assets/dist/img/pause.png" alt="prueba" style="width: 60px;"> -->
+                            <img *ngIf="dato.estado === 'Detenido' " src="../../assets/dist/img/tiempo.png" alt="prueba" style="width: 60px;">
+                            <img *ngIf="dato.estado === 'En proceso' " src="../../assets/dist/img/tiempo.png" alt="prueba" style="width: 60px;">
+                            <img *ngIf="dato.nro_hito === '6' && dato.estado === 'Completado' " src="../../assets/dist/img/completado.png" alt="prueba" style="width: 60px;">
+                            <br>
+                            <a href="#" onclick="return false;">Decanatura de la Facultad de Ingeniería</a><br>
+                            <span *ngIf="dato.estado !== 'Detenido' && dato.nro_hito !== '2'">Status: {{dato.estado}}</span><br>
+                            <span *ngIf="dato.estado !== 'Detenido'">{{dato.fecha_hito_2}}</span><br>
+                          </div>
+                          <div class="col" style="margin: 0 2em;">
+                            <br>
+                            <!-- <img *ngIf="dato.estado === 'Detenido' " src="../../assets/dist/img/pause.png" alt="prueba" style="width: 60px;"> -->
+                            <img *ngIf="dato.estado === 'Detenido' " src="../../assets/dist/img/tiempo.png" alt="prueba" style="width: 60px;">
+                            <img *ngIf="dato.estado === 'En proceso' " src="../../assets/dist/img/tiempo.png" alt="prueba" style="width: 60px;">
+                            <img *ngIf="dato.nro_hito === '6' && dato.estado === 'Completado' " src="../../assets/dist/img/completado.png" alt="prueba" style="width: 60px;">
+                            <br>
+                            <a href="#" onclick="return false;">Grados y titulos</a><br>
+                            <span *ngIf="dato.estado !== 'Detenido' && dato.nro_hito === '6' ">Status: {{dato.estado}}</span><br>
+                            <span *ngIf="dato.estado !== 'Detenido'">{{dato.fecha_hito_3}}</span><br>
+                          </div><br>
+      
+                        <!-- fecha creacion y ver mas detalles -->
+                          <div class="container-fluid"><br>
+                            <div class="row">
+                              <div class="col-md-8 col-sm-6 col-12">
+                                <div class="info-box">
+                                  <span class="info-box-icon bg-purple"><i class="far fa-calendar"></i></span>
+
+                                  <div class="info-box-content">
+                                      <span class="info-box-text">Se notificó el:</span>
+                                      <span class="info-box-number">{{dato.fechatramite}}</span>
+                                  </div>
+                                  <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                              </div>
+                              <!-- /.col -->
+                              <div class="col-md-4 col-sm-6 col-12">
+                                <div class="info-box">
+                                  <span class="info-box-icon bg-success"><i class="nav-icon fas fa-plus"></i></span>
+
+                                  <div class="info-box-content">
+                                    <button class="mano-cursor btn btn-primary" (click)="VerDetalles(dato.id_tramite)" data-bs-toggle="modal" data-bs-target="#ver_mas" mat-icon-button>
+                                      Ver más detalles
+                                    </button>
+                                  </div>
+                                  <!-- /.info-box-content -->
+                                </div>
+                                <!-- /.info-box -->
+                              </div>
+                            </div>
+                          </div><!-- /.container-fluid -->
+                      </div>
+                    </section>
+                  </div>
+                  
+                  <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+              </div>
+              <!-- /.col -->
+            </div>
+          </div>
+
+          <!-- fin prueba -->
+
+        
+
+        </div><!-- /.container-fluid -->
+
+            <!-- modal editar -->
+    <div class="modal fade " id="ver_mas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title" id="staticBackdropLabel">MAS DETALLES</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div> 
+          
+          <div class="modal-body">
+              <!-- linea de tiempo -->
+              <div *ngIf="status === 'true'" >
+              <div class="row" *ngFor="let dato of data2">
+                <div class="col-12">
+                  <div class="card card-primary">
+                    <div class="card-header" style="display: flex; justify-content: space-between;">
+                      <h3 class="card-title timeline-header" style="margin-right: auto;">
+                        Rastreo de Trámite Documentario: "{{dato.tipo}}" ({{dato.nombre}} {{dato.apellido}})
+                      </h3>
+                      
+                      <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove">
+                          <i class="fas fa-times"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                      <div class="row margin">
+
+                        <section class="content">
+                          <div class="container-fluid">
+
+                                <!-- fecha y hora  -->
+                                <div class="time-label">
+
+                                </div>
+
+
+
+                            <!-- Timelime example  -->
+                            <div class="row">
+                              <div class="col-md-12">
+                                
+                                <div class="leyenda">
+                                  <div class="estado">
+                                    <div class="circulo completado"></div>
+                                    <span>Completado</span>
+                                  </div>
+                                  <div class="estado">
+                                    <div class="circulo en-revision"></div>
+                                    <span>En Proceso</span>
+                                  </div>
+                                  <div class="estado">
+                                    <div class="circulo en-proceso"></div>
+                                    <span>En Espera</span>
+                                  </div>
+                                  <div class="estado">
+                                    <div class="circulo detenido"></div>
+                                    <span>Detenido</span>
+                                  </div>
+                                </div>
+                                <!-- The time line -->
+                                <div class="timeline">
+
+                                  
+
+                                  <!-- timeline time label -->
+                                  <div class="time-label">
+                                    <span class="bg-purple">{{dato.fechatramite}}</span>
+                                  </div>
+
+                                  <div class="time-label">
+                                    <span class="bg-green">Mesa de partes: Derivado</span>
+                                  </div>
+                                  <!-- timeline item -->
+                                  <div *ngIf="nro_hito">
+                                    <!-- <i class="fas fa-envelope bg-blue"></i> -->
+                                    
+                                    <i class="fas fa-check bg-green"></i>
+
+                                    <div class="timeline-item">
+                                      <span class="time"><i class="fas fa-clock"></i> {{dato.fechatramite}}</span>
+                                      <h3 class="timeline-header">
+                                          <a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                            Tus documentos fueron recepcionados en mesa de partes - status: Derivado
+                                          </a>
+                                      </h3>
+
+                                      <div class="timeline-body">
+                                        Tus documentos fueron registrados en mesa de partes y fue derivado a la Oficina de Grados y Titulos de {{ dato.facultad }}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!-- END timeline item -->
+
+                                  <!-- timeline time label -->
+                                  <div class="time-label" *ngIf="dato.nro_hito === '2' && dato.estado ==='En proceso' ">
+                                    <span class="bg-yellow">Grados y titulos: Recepcionado</span>
+                                  </div>
+                                  <div class="time-label" *ngIf="dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6' ">
+                                    <span class="bg-green">Grados y titulos: Derivado</span>
+                                  </div>
+                                  <div class="time-label" *ngIf="dato.nro_hito === '2' && dato.estado ==='Detenido' ">
+                                    <span class="bg-red">Grados y titulos: {{dato.estado}}</span>
+                                  </div>
+                                  
+                                  <!-- /.timeline-label -->
+
+                                  <!-- timeline item -->
+                                  <div *ngIf="dato.nro_hito">
+                                    <i class="fas fa-check bg-green"></i>
+                                      <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> {{dato.fecha_hito_1}}</span>
+                                        <h3 class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos fueron recepcionados en Grados y titulos de {{dato.facultad}} - Estatus: Recepcionado
+                                          </a>
+                                        </h3>
+
+                                        <div class="timeline-body">
+                                          Tus documentos estan en proceso de revisión.
+                                        </div>
+                                        <!-- <div *ngIf="nro_hito === '3' || nro_hito === '4' || nro_hito === '5' || nro_hito === '6' " class="timeline-body">
+                                          El documento esta en proceso de revisión.
+                                        </div> -->
+                                      </div>
+                                    </div>
+                                  <!-- timeline item -->
+                                  <div  *ngIf="dato.nro_hito">
+                                    <i *ngIf="dato.nro_hito === '2' && dato.estado ==='En proceso'" class="fas fa-hourglass bg-yellow"></i>
+                                    <i *ngIf="dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6' " class="fas fa-check bg-green"></i>
+                                    <i *ngIf="dato.nro_hito === '2' && dato.estado === 'Detenido'" class="fas fa-pause bg-red"></i>
+                                      <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> {{dato.fecha_hito_1}}</span>
+                                        <h3 *ngIf="dato.nro_hito === '2' && dato.estado ==='En proceso'" class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos estan en espera a ser revisados - status: {{dato.estado}}
+                                          </a>
+                                        </h3>
+                                        <h3   *ngIf="dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6' " class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos fueron revisados - status: Derivado
+                                          </a>
+                                        </h3>
+                                        <h3   *ngIf="dato.nro_hito === '2' && dato.estado ==='Detenido' " class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos fueron revisados, pero tiene observaciones - status: {{dato.estado}}
+                                          </a>
+                                        </h3>
+
+                                        <div *ngIf="dato.nro_hito === '2' && dato.estado ==='En proceso'" class="timeline-body">
+                                          Tus documentos estan en proceso de revisión, esto puede tradar unos cuantos dias.
+                                        </div>
+                                        <div *ngIf="dato.nro_hito === '3' || dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6' " class="timeline-body">
+                                          Tus documentos fueron revisados y fue derivado a la oficina de Decanatura de la {{facultad}}.
+                                        </div>
+                                        <div *ngIf="dato.nro_hito === '2' && dato.estado ==='Detenido' " class="timeline-body">
+                                          <p>Tus documentos fueron revisados, pero tienen observaciones que tiene que subsanar en los siguientes requisitos:</p> 
+
+                                          <li *ngIf="dato.obs_fut === '0'">{{'Fut completo'}}</li>
+                                          <li *ngIf="dato.obs_constancia_egresado === '0'">{{'Constancia de Egresado (SSAA actualizado)'}}</li>
+                                          <li *ngIf="dato.obs_constancia_matricula === '0'">{{'Constancia de Matricula (SSAA actualizado)'}}</li>
+                                          <li *ngIf="dato.obs_certificado_estudio === '0'">{{'Certificado de Estudios originales (SSAA actualizado)'}}</li>                                       
+                                          <li *ngIf="dato.obs_constancia_no_adeudar_libros === '0'">{{'Constancia de NO ADEUDAR libros de la universidad'}}</li>
+                                          <li *ngIf="dato.obs_fotogracia === '0'">{{'03 fotografias, tamaño pasaporte a color fondo blanco terno Azul/blusa blanco (si retoques ni joyas)'}}</li>
+                                          <li *ngIf="dato.obs_copia_legalizada_dni === '0'">{{'Copia legalizada de DNI (Notario Publico)'}}</li>
+                                          <li *ngIf="dato.obs_partida_nacimiento === '0'">{{'Partida de Nacimiento Original (año fiscal)'}}</li>                                          
+                                          <li *ngIf="dato.obs_comprobante_pago_titulacion === '0'">{{'Comprobante de pago por derecho de Titulacion'}}</li>
+                                          <li *ngIf="dato.obs_comprobante_pago_bachiller === '0'">{{'Comprobante de pago por derecho de graduacion Otorgado del Grado Academico de Bachiller'}}</li>
+                                          <li *ngIf="dato.obs_copia_certificado_idiomas === '0'">{{'Copia fedatada de secretaria general del Certificado de idiomas de la (UNAMBA)'}}</li>
+                                          <li *ngIf="dato.obs_resolucion_sustentacion_tesis === '0'">{{'Resolucion de Consejo de Facultad de Sustentacion de Tesis y Acia (fedatado por el Scre. General de la UNAMBA)'}}</li>
+                                          <li *ngIf="dato.obs_constancia_investigacion === '0'">{{'Constancia emitida por la Unidad de Investigacion de la Facultad (rigurar conformidad de entrega de empastados)'}}</li>
+                                          <li *ngIf="dato.obs_constancia_biblioteca === '0'">{{'Constancia emitida pa la Biblioteca central (conformidad de entrega de requisitos Aplicativo Web "Repositorio")'}}</li>
+                                          <li *ngIf="dato.obs_cd === '0'">{{'CD con los Documentos Requeridos'}}</li>
+                                          <li *ngIf="dato.obs_constancia_no_adeudar_escuela === '0'">{{'Constancia de NO ADEUDAR por la direccion de la Escuela Profecional'}}</li>
+                                          <li *ngIf="dato.obs_foto === '0'">{{'foto'}}</li><br>
+
+                                          <p>Acercarce a la oficina Grados y Titulos de {{dato.facultad}} - Estatus: {{dato.estado}}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- END timeline item -->
+                                
+                                  <!-- timeline time label -->
+                                  <div *ngIf="dato.nro_hito === '3'" class="time-label">
+                                    <span class="bg-gray">Decanatura de la {{dato.facultad}}</span>
+                                  </div>
+                                  <div *ngIf="dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6'" class="time-label">
+                                    <span class="bg-green">Decanatura de la {{dato.facultad}}</span>
+                                  </div>
+                                  <!-- /.timeline-label -->
+
+                                  <!-- timeline item -->
+                                  <div *ngIf="dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6'">
+                                      <i class="fas fa-check bg-green"></i>
+                                      <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> {{dato.fecha_hito_2}}</span>
+                                        <h3 class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos fueron recepcionados por Decanatura de la {{dato.facultad}} - status: Recepcionado
+                                          </a>
+                                        </h3>
+
+                                        <div class="timeline-body">
+                                          Tus documentos estan en proceso de revisión.
+                                        </div>
+                                      </div>
+                                    </div>
+                                  <div *ngIf="dato.nro_hito === '4' || dato.nro_hito === '5' || dato.nro_hito === '6'">
+                                    <i class="fas fa-check bg-green"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> {{dato.fecha_hito_2}}</span>
+                                        <h3 class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos fueron revisados - status: Derivado
+                                          </a>
+                                        </h3>
+
+                                        <div class="timeline-body">
+                                          Tus documentos fueron revisados y fue derivado a la oficina de Grados y Titulos de la  {{dato.facultad}}.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- END timeline item -->
+                                  <!-- timeline time label -->
+
+                                    <!-- END timeline item -->
+                                  <!-- timeline time label -->
+                                  <div *ngIf="dato.nro_hito === '6'" class="time-label">
+                                    <span class="bg-green">Grados y titulos: {{dato.estado}}</span>
+                                  </div>
+                                  <!-- /.timeline-label -->
+
+                                  <!-- timeline item -->
+                                  <div *ngIf="dato.nro_hito === '6'">
+                                      <i class="fas fa-check bg-green"></i>
+                                      <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> {{dato.fecha_hito_3}}</span>
+                                        <h3 class="timeline-header"><a href="#" onclick="return false;"><i class="fas fa-check-circle"></i>
+                                          Tus documentos fueron recepcionados por Grados y Titulo de la {{dato.facultad}} - status: {{dato.estado}}
+                                          </a>
+                                        </h3>
+
+                                        <div class="timeline-body">
+                                          Tus documentos ya fueron derivados a Grados y Titulo General de la UNAMBA.
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <!-- END timeline item -->
+
+                                  <div *ngIf="dato.estado === 'En proceso' || dato.estado === 'Detenido'">
+                                    <i class="fas fa-clock bg-gray"></i>
+                                  </div>
+                                  <div *ngIf="dato.estado === 'Completado'">
+                                    <i class="fas fa-check bg-green"></i>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <!-- /.col -->
+                            </div>
+                          </div>
+                          <!-- /.timeline -->
+
+                      </section>
+
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+                  </div>
+                  <!-- /.card -->
+                </div>
+                <!-- /.col -->
+              </div>
+            </div>
+              <!-- /.row -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+      </section>
+      <!-- /.content -->
+
+    </div>
+
+
+  <!-- jQuery -->
+
+
+<!-- Agrega aquí la referencia a FontAwesome para el icono -->
+<!-- <script src="https://kit.fontawesome.com/a076d05399.js"></script> -->
+<!-- Agrega aquí tu propio código JavaScript para mostrar la fecha y hora actual en #fechaHoraActual -->
+
