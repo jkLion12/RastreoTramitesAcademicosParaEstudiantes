@@ -9,7 +9,7 @@ import { FechaHitoI } from '../modelos/fecha_hito.interface';
 })
 export class ApiService {
   //url de la api
-  url:string = "http://localhost:80/API GRADOS TITULOS/";
+  url:string = "http://localhost:80/API-SeguimientoTramitesAcademicos/";
 
   constructor(private http:HttpClient) { }
 
